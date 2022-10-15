@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ASP;
 using GameStore.DomainCore.Identity;
 using GameStore.Web.Models;
+using GameStore.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace GameStore.Web.Controllers
 {
@@ -28,16 +29,23 @@ namespace GameStore.Web.Controllers
         {
             return View();
         }
-
-
-        [HttpPost]
-        public IActionResult Login(string name)
+        
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            // var result = await _signInManager.SignInAsync(new AppUser{  })
-
-            return RedirectToAction("Index", "Home");
+            Console.WriteLine(JsonConvert.SerializeObject(model));
+            var result = 
+                    await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
+                
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return RedirectToAction("Register", "Account");
+                }
         }
-
+       
         [HttpGet]
         public IActionResult Register()
         {
@@ -45,17 +53,42 @@ namespace GameStore.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(string name)
+        public async Task<IActionResult> Register(RegisterViewModel register)
         {
             
             
+            Console.WriteLine(JsonConvert.SerializeObject(register));
+
+            var user = new AppUser
+            {
+                Email = register.Email,
+                UserName = register.UserName,
+                Membership = "Admin",
+                UserRoles = new List<AppRole>(new []{new AppRole
+                {
+                    Name = "Admin",
+                }})
+                
+            };
+            
+            
+            
+            var result = await _userManager.CreateAsync(user, register.Password);
+
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, false);
+                return RedirectToAction("Index", "Home");
+            }
             
             return RedirectToAction("Index", "Home");
         }
         
-        public IActionResult LogOff()
+        [HttpGet]
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

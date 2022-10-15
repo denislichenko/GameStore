@@ -1,10 +1,15 @@
-﻿@model object
-
+﻿
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<h2>Login</h2>
 
-<form method="post"><button type="submit" asp-controller="Account" asp-action="Login">Pseudo authorize</button></form >
+<form method="post" asp-controller="Account" asp-action="Login">
+    
+    <input type="text" placeholder="Username" name="UserName" value=""/>
+    <input type="text" placeholder="Password" name="Password" value=""/>
+    <input type="checkbox" name="RememberMe" checked="checked" />
+    <button type="submit">Login</button>
+</form >
