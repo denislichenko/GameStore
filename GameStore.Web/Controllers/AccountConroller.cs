@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ using Newtonsoft.Json;
 
 namespace GameStore.Web.Controllers
 {
+
     public class AccountController : Controller
     {
 
@@ -49,8 +51,9 @@ namespace GameStore.Web.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            return View(); //return
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel register)
