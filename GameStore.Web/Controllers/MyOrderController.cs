@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Http;
 
 namespace GameStore.Web.Controllers
 {
-    public class MyOrderController : Controller
+    public class MyOrderController : Controller //class
     {
         private readonly GameStoreDBContext _context;
 
-        public MyOrderController(GameStoreDBContext context)
+        public MyOrderController(GameStoreDBContext context) //My order
         {
             _context = context;
         }
