@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  gruppirovka_admin_production:
+    container_name: gamestore_production
+    working_dir: /app
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+    ports:
+      - 80:80
